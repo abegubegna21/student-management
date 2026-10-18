@@ -8,62 +8,157 @@
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Student Management</h1>
-            <p>A full-stack Spring Boot & JavaScript app</p>
-        </header>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>SMS Dashboard</h2>
+            <button class="nav-btn active" onclick="showPage('students-page', this)">Students</button>
+            <button class="nav-btn" onclick="showPage('courses-page', this)">Courses</button>
+            <button class="nav-btn" onclick="showPage('enrollments-page', this)">Enrollments</button>
+        </nav>
 
-        <!-- Form Section -->
-        <section class="card">
-            <h2>Add New Student</h2>
+        <!-- Main Content Area -->
+        <main class="content">
             
-            <!-- Error Box -->
-            <div id="error-box" class="error-box hidden"></div>
-            
-            <form id="student-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" placeholder="e.g. Alice">
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" placeholder="e.g. Smith">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="alice@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="dateOfBirth">Date of Birth</label>
-                        <input type="date" id="dateOfBirth">
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary">Save Student</button>
-            </form>
-        </section>
+            <!-- STUDENTS PAGE -->
+            <div id="students-page" class="page-section">
+                <h1>Manage Students</h1>
+                
+                <section class="card">
+                    <h2>Add New Student</h2>
+                    <div id="error-box" class="error-box hidden"></div>
+                    <form id="student-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" placeholder="e.g. Alice">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" placeholder="e.g. Smith">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="alice@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth</label>
+                                <input type="date" id="dateOfBirth">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button type="submit" id="submit-btn" class="btn-primary" style="flex: 2;">Save Student</button>
+                            <button type="button" id="cancel-btn" class="btn-delete" style="flex: 1; display: none;" onclick="resetForm()">Cancel</button>
+                        </div>
+                    </form>
+                </section>
 
-        <!-- Table Section -->
-        <section class="card">
-            <h2>Registered Students</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Enrollment Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="student-list">
-                    <!-- Data will be inserted here by app.js -->
-                </tbody>
-            </table>
-        </section>
+                <section class="card">
+                    <h2>Registered Students</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Enrollment Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-list"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <!-- COURSES PAGE -->
+            <div id="courses-page" class="page-section hidden">
+                <h1>Manage Courses</h1>
+                
+                <section class="card">
+                    <h2>Add New Course</h2>
+                    <div id="course-error-box" class="error-box hidden"></div>
+                    <form id="course-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="courseCode">Course Code</label>
+                                <input type="text" id="courseCode" placeholder="e.g. CS101">
+                            </div>
+                            <div class="form-group">
+                                <label for="courseTitle">Course Title</label>
+                                <input type="text" id="courseTitle" placeholder="e.g. Intro to Programming">
+                            </div>
+                            <div class="form-group">
+                                <label for="courseCredits">Credits</label>
+                                <input type="number" id="courseCredits" placeholder="e.g. 3" min="1">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Course</button>
+                    </form>
+                </section>
+
+                <section class="card">
+                    <h2>Available Courses</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Title</th>
+                                <th>Credits</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="course-list"></tbody>
+                    </table>
+                </section>
+            </div>
+
+            <!-- ENROLLMENTS PAGE -->
+            <div id="enrollments-page" class="page-section hidden">
+                <h1>Manage Enrollments</h1>
+                
+                <section class="card">
+                    <h2>Enroll Student in Course</h2>
+                    <div id="enrollment-error-box" class="error-box hidden"></div>
+                    <form id="enrollment-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="enrollStudent">Select Student</label>
+                                <select id="enrollStudent" required>
+                                    <option value="">-- Choose a Student --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="enrollCourse">Select Course</label>
+                                <select id="enrollCourse" required>
+                                    <option value="">-- Choose a Course --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Enroll Student</button>
+                    </form>
+                </section>
+
+                <section class="card">
+                    <h2>Current Enrollments</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student Name</th>
+                                <th>Course</th>
+                                <th>Enrollment Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enrollment-list"></tbody>
+                    </table>
+                </section>
+            </div>
+
+        </main>
     </div>
 
     <script src="app.js"></script>
